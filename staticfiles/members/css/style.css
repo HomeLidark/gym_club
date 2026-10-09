@@ -1,0 +1,818 @@
+/* ============================================================ */
+/* =================== التنسيقات العامة ======================== */
+/* ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* ============================================================ */
+/* =================== الشريط العلوي =========================== */
+/* ============================================================ */
+
+.navbar {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+    padding: 12px 20px;
+    z-index: 1050;
+    border-bottom: 2px solid #e94560;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.navbar-brand i {
+    color: #e94560;
+    font-size: 1.8rem;
+}
+
+.navbar-brand .badge {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, #e94560, #ff6b6b) !important;
+    color: #fff !important;
+}
+
+.navbar .nav-link {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 8px 15px;
+}
+
+.navbar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar .btn-outline-danger {
+    border-color: #e94560;
+    color: #e94560;
+}
+
+.navbar .btn-outline-danger:hover {
+    background-color: #e94560;
+    color: #fff;
+}
+
+/* ============================================================ */
+/* =================== القائمة الجانبية ======================== */
+/* ============================================================ */
+
+.sidebar {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    border-left: 3px solid #e94560;
+    padding-top: 20px;
+    overflow-y: auto;
+    z-index: 1040;
+    width: 250px;
+    transition: all 0.3s ease;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #e94560;
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-inner {
+    padding: 0 10px 20px;
+}
+
+/* صورة الملف الشخصي */
+.avatar-circle {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #e94560, #ff6b6b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.3);
+    transition: all 0.3s ease;
+}
+
+.avatar-circle:hover {
+    transform: scale(1.05);
+    border-color: #fff;
+}
+
+.sidebar .nav-link {
+    color: #a0aec0;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin: 2px 0;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.sidebar .nav-link i {
+    width: 22px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #a0aec0;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link span {
+    flex: 1;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(233, 69, 96, 0.15);
+    color: #fff;
+    transform: translateX(-5px);
+}
+
+.sidebar .nav-link:hover i {
+    color: #e94560;
+}
+
+.sidebar .nav-link.active {
+    background: linear-gradient(135deg, #e94560, #c0392b);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+}
+
+.sidebar .nav-link.active i {
+    color: #fff;
+}
+
+.sidebar .nav-link .badge {
+    background: #e94560;
+    color: #fff;
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+
+.sidebar .nav-link .fa-chevron-left {
+    font-size: 0.7rem;
+    opacity: 0.5;
+}
+
+.sidebar .nav-link.text-danger {
+    color: #e94560 !important;
+}
+
+.sidebar .nav-link.text-danger i {
+    color: #e94560 !important;
+}
+
+.sidebar .nav-link.text-danger:hover {
+    background: rgba(233, 69, 96, 0.2);
+    color: #ff6b6b !important;
+}
+
+/* ============================================================ */
+/* =================== المحتوى الرئيسي ======================== */
+/* ============================================================ */
+
+.main-content {
+    padding: 30px 35px;
+    min-height: 100vh;
+    background: #f0f2f5;
+}
+
+/* ====== رأس الصفحة ====== */
+.page-header {
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.page-header h4 {
+    color: #1a1a2e;
+    font-weight: 800;
+}
+
+.page-header .breadcrumb {
+    background: transparent;
+    padding: 0;
+}
+
+.page-header .breadcrumb-item a {
+    color: #e94560;
+}
+
+.page-header .breadcrumb-item a:hover {
+    color: #c0392b;
+}
+
+/* ====== التنبيهات ====== */
+.alert {
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    animation: slideDown 0.5s ease;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #b7e4c7);
+    border-color: #28a745;
+    color: #155724;
+}
+
+.alert-error {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    border-color: #dc3545;
+    color: #721c24;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    border-color: #ffc107;
+    color: #856404;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1, #b8d4e3);
+    border-color: #17a2b8;
+    color: #0c5460;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ====== البطاقات ====== */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    background: #fff;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+}
+
+.card-header {
+    background: #fff;
+    border-bottom: 2px solid #f0f2f5;
+    padding: 18px 22px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #1a1a2e;
+}
+
+.card-header.bg-primary {
+    background: linear-gradient(135deg, #e94560, #c0392b) !important;
+    color: #fff !important;
+}
+
+.card-header.bg-success {
+    background: linear-gradient(135deg, #28a745, #20c997) !important;
+    color: #fff !important;
+}
+
+.card-header.bg-info {
+    background: linear-gradient(135deg, #17a2b8, #0dcaf0) !important;
+    color: #fff !important;
+}
+
+.card-header.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #fd7e14) !important;
+    color: #fff !important;
+}
+
+.card-header.bg-danger {
+    background: linear-gradient(135deg, #dc3545, #e94560) !important;
+    color: #fff !important;
+}
+
+.card-body {
+    padding: 22px;
+}
+
+/* ====== البطاقات الإحصائية ====== */
+.stat-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card .stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.stat-card .stat-icon.primary {
+    background: linear-gradient(135deg, #e94560, #c0392b);
+}
+
+.stat-card .stat-icon.success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.stat-card .stat-icon.info {
+    background: linear-gradient(135deg, #17a2b8, #0dcaf0);
+}
+
+.stat-card .stat-icon.warning {
+    background: linear-gradient(135deg, #ffc107, #fd7e14);
+}
+
+.stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin: 5px 0 0;
+}
+
+.stat-card .stat-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* ====== الجداول ====== */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+    background: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    padding: 12px 15px;
+}
+
+.table tbody td {
+    padding: 12px 15px;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table-hover tbody tr:hover {
+    background: #f8f0f2;
+    cursor: pointer;
+}
+
+/* ====== الأزرار ====== */
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 10px 25px;
+    transition: all 0.3s ease;
+    font-family: 'Cairo', sans-serif;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #e94560, #c0392b);
+    border: none;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    color: #fff;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border: none;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #1e7e34, #17a589);
+    color: #fff;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545, #e94560);
+    border: none;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #bd2130, #c0392b);
+    color: #fff;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107, #fd7e14);
+    border: none;
+    color: #fff;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #e0a800, #e06b0a);
+    color: #fff;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #6c757d, #495057);
+    border: none;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #5a6268, #343a40);
+    color: #fff;
+}
+
+.btn-outline-primary {
+    border: 2px solid #e94560;
+    color: #e94560;
+}
+
+.btn-outline-primary:hover {
+    background: #e94560;
+    color: #fff;
+}
+
+.btn-sm {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+}
+
+.btn-lg {
+    padding: 12px 35px;
+    font-size: 1.1rem;
+}
+
+/* ====== الحقول ====== */
+.form-control {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    padding: 10px 15px;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #e94560;
+    box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+}
+
+.form-control-lg {
+    padding: 12px 20px;
+    font-size: 1.05rem;
+}
+
+.form-select {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    padding: 10px 15px;
+    font-family: 'Cairo', sans-serif;
+}
+
+.form-select:focus {
+    border-color: #e94560;
+    box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+}
+
+/* ====== التذييل ====== */
+.footer {
+    background: #fff;
+    border-radius: 15px;
+    padding: 15px 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================================ */
+/* =================== التجاوب مع الشاشات ====================== */
+/* ============================================================ */
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative !important;
+        padding-top: 10px;
+    }
+    
+    .main-content {
+        padding: 15px;
+        margin-right: 0 !important;
+    }
+    
+    .stat-card .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .page-header {
+        padding: 15px;
+    }
+    
+    .page-header h4 {
+        font-size: 1.1rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .avatar-circle {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .avatar-circle i {
+        font-size: 2rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-content {
+        padding: 10px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    .table thead th,
+    .table tbody td {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .btn {
+        padding: 6px 15px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ============================================================ */
+/* =================== تنسيقات إضافية ========================== */
+/* ============================================================ */
+
+/* ====== الشارات ====== */
+.badge {
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+}
+
+/* ====== التقدم ====== */
+.progress {
+    height: 8px;
+    border-radius: 10px;
+    background: #e9ecef;
+}
+
+.progress-bar {
+    border-radius: 10px;
+    background: linear-gradient(135deg, #e94560, #c0392b);
+}
+
+/* ====== الروابط ====== */
+a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #e94560;
+}
+
+/* ====== الأيقونات في الجداول ====== */
+.table .btn i {
+    margin: 0;
+}
+
+/* ====== إخفاء التمرير الزائد ====== */
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* ====== تنسيق الصفحات الفارغة ====== */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: #dee2e6;
+    margin-bottom: 20px;
+}
+
+.empty-state h5 {
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.empty-state p {
+    color: #adb5bd;
+}
+
+/* ====== شريط التمرير ====== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e94560;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c0392b;
+}
+/* ===== تنسيق حقول التاريخ ===== */
+input[type="date"] {
+    cursor: pointer;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    min-height: 45px;
+}
+
+input[type="date"]:hover {
+    background: #fff;
+    border-color: var(--primary);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    filter: invert(0.4);
+    transition: all 0.3s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    background: var(--primary);
+    filter: invert(1);
+    transform: scale(1.1);
+}
+
+/* ===== تنسيق التقويم المنبثق ===== */
+::-webkit-datetime-edit {
+    padding: 5px 10px;
+    color: var(--text-primary);
+}
+
+::-webkit-datetime-edit-fields-wrapper {
+    color: var(--text-primary);
+}
+
+::-webkit-datetime-edit-text {
+    color: var(--text-muted);
+    padding: 0 3px;
+}
+
+::-webkit-datetime-edit-month-field,
+::-webkit-datetime-edit-day-field,
+::-webkit-datetime-edit-year-field {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+::-webkit-datetime-edit-month-field:focus,
+::-webkit-datetime-edit-day-field:focus,
+::-webkit-datetime-edit-year-field:focus {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 3px;
+}
+
+/* تنسيق أيقونة التقويم في فايرفوكس */
+input[type="date"]::-moz-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+input[type="date"]::-moz-calendar-picker-indicator:hover {
+    background: var(--primary);
+    filter: invert(1);
+}
+
+/* ===== تنسيق حقول التاريخ ===== */
+input[type="date"] {
+    cursor: pointer;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    min-height: 45px;
+}
+
+input[type="date"]:hover {
+    background: #fff;
+    border-color: var(--primary);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    filter: invert(0.4);
+    transition: all 0.3s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    background: var(--primary);
+    filter: invert(1);
+    transform: scale(1.1);
+}
+
+/* ===== تنسيق التقويم المنبثق ===== */
+::-webkit-datetime-edit {
+    padding: 5px 10px;
+    color: var(--text-primary);
+}
+
+::-webkit-datetime-edit-fields-wrapper {
+    color: var(--text-primary);
+}
+
+::-webkit-datetime-edit-text {
+    color: var(--text-muted);
+    padding: 0 3px;
+}
+
+::-webkit-datetime-edit-month-field,
+::-webkit-datetime-edit-day-field,
+::-webkit-datetime-edit-year-field {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+::-webkit-datetime-edit-month-field:focus,
+::-webkit-datetime-edit-day-field:focus,
+::-webkit-datetime-edit-year-field:focus {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 3px;
+}
+
+/* تنسيق أيقونة التقويم في فايرفوكس */
+input[type="date"]::-moz-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+input[type="date"]::-moz-calendar-picker-indicator:hover {
+    background: var(--primary);
+    filter: invert(1);
+}
