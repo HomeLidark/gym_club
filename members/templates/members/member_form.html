@@ -1,0 +1,247 @@
+{% extends 'members/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_title %}
+    <i class="fas fa-user-plus"></i> {{ title }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'member_list' %}">الأعضاء</a></li>
+    <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-md-11">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>
+                        {{ title }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- عرض أخطاء الفورم العامة -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i> {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <!-- ===== المعلومات الشخصية ===== -->
+                        <div class="section-title">
+                            <i class="fas fa-user-circle"></i> المعلومات الشخصية
+                        </div>
+                        <hr>
+                        
+                        <div class="row g-3">
+                            <!-- الاسم -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        {{ form.name.label }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                        <div class="text-danger small mt-1">{{ form.name.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- الهاتف -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        {{ form.phone.label }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.phone }}
+                                    {% if form.phone.errors %}
+                                        <div class="text-danger small mt-1">{{ form.phone.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-3">
+                            <!-- رقم الهوية -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        {{ form.id_number.label }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.id_number }}
+                                    {% if form.id_number.errors %}
+                                        <div class="text-danger small mt-1">{{ form.id_number.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- تاريخ الميلاد -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{{ form.birth_date.label }}</label>
+                                    {{ form.birth_date }}
+                                    <small class="text-muted d-block mt-1">
+                                        <i class="far fa-calendar-alt"></i> اختر التاريخ من التقويم
+                                    </small>
+                                    {% if form.birth_date.errors %}
+                                        <div class="text-danger small mt-1">{{ form.birth_date.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- العنوان -->
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{{ form.address.label }}</label>
+                                    {{ form.address }}
+                                    {% if form.address.errors %}
+                                        <div class="text-danger small mt-1">{{ form.address.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ===== معلومات الاشتراك ===== -->
+                        <div class="section-title mt-4">
+                            <i class="fas fa-calendar-check"></i> معلومات الاشتراك
+                        </div>
+                        <hr>
+                        
+                        <div class="row g-3">
+                            <!-- بداية الاشتراك -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        {{ form.subscription_start.label }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.subscription_start }}
+                                    <small class="text-muted d-block mt-1">
+                                        <i class="far fa-calendar-alt"></i> اختر تاريخ البداية
+                                    </small>
+                                    {% if form.subscription_start.errors %}
+                                        <div class="text-danger small mt-1">{{ form.subscription_start.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- نهاية الاشتراك -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        {{ form.subscription_end.label }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.subscription_end }}
+                                    <small class="text-muted d-block mt-1">
+                                        <i class="far fa-calendar-alt"></i> اختر تاريخ النهاية
+                                    </small>
+                                    {% if form.subscription_end.errors %}
+                                        <div class="text-danger small mt-1">{{ form.subscription_end.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- نوع الاشتراك -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        {{ form.subscription_type.label }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.subscription_type }}
+                                    {% if form.subscription_type.errors %}
+                                        <div class="text-danger small mt-1">{{ form.subscription_type.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- اشتراك فعال -->
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <div class="form-check form-switch">
+                                        {{ form.is_active }}
+                                        <label class="form-check-label fw-bold" for="{{ form.is_active.id_for_label }}">
+                                            {{ form.is_active.label }}
+                                        </label>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">
+                                        <i class="fas fa-info-circle"></i> قم بإلغاء التحديد إذا كان الاشتراك غير فعال
+                                    </small>
+                                    {% if form.is_active.errors %}
+                                        <div class="text-danger small mt-1">{{ form.is_active.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ملاحظات -->
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{{ form.notes.label }}</label>
+                                    {{ form.notes }}
+                                    {% if form.notes.errors %}
+                                        <div class="text-danger small mt-1">{{ form.notes.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <!-- ===== أزرار التحكم ===== -->
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="fas fa-save me-1"></i> حفظ
+                            </button>
+                            <a href="{% url 'member_list' %}" class="btn btn-secondary px-4">
+                                <i class="fas fa-times me-1"></i> إلغاء
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تحسين ظهور التقويم عند الضغط على الحقول
+        const dateInputs = document.querySelectorAll('input[type="date"]');
+        dateInputs.forEach(function(input) {
+            input.style.cursor = 'pointer';
+            input.addEventListener('click', function() {
+                if (this.showPicker) {
+                    this.showPicker();
+                }
+            });
+        });
+        
+        // جعل الصفحة تظهر بشكل كامل
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.style.overflow = 'visible';
+            mainContent.style.height = 'auto';
+        }
+    });
+</script>
+{% endblock %}

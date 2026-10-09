@@ -1,0 +1,160 @@
+{% extends 'members/base.html' %}
+
+{% block title %}لوحة التحكم{% endblock %}
+
+{% block page_title %}
+    <i class="fas fa-chart-pie"></i> لوحة التحكم
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">لوحة التحكم</li>
+{% endblock %}
+
+{% block content %}
+<!-- ===== البطاقات الإحصائية ===== -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card text-center p-3">
+            <div class="stat-icon primary mx-auto mb-2">
+                <i class="fas fa-users"></i>
+            </div>
+            <h6 class="stat-label">إجمالي الأعضاء</h6>
+            <h3 class="stat-number">{{ total_members }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card text-center p-3">
+            <div class="stat-icon success mx-auto mb-2">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <h6 class="stat-label">نشطين</h6>
+            <h3 class="stat-number">{{ active_members }}</h3>
+            <small class="text-muted">غير مجمدين</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card text-center p-3">
+            <div class="stat-icon warning mx-auto mb-2">
+                <i class="fas fa-snowflake"></i>
+            </div>
+            <h6 class="stat-label">❄️ مجمدين</h6>
+            <h3 class="stat-number">{{ frozen_members }}</h3>
+            <small class="text-muted">اشتراك مجمد</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card text-center p-3">
+            <div class="stat-icon danger mx-auto mb-2">
+                <i class="fas fa-user-times"></i>
+            </div>
+            <h6 class="stat-label">منتهي اشتراك</h6>
+            <h3 class="stat-number">{{ expired_members }}</h3>
+        </div>
+    </div>
+</div>
+
+<!-- ===== بطاقة إضافية: إجمالي النشطين (نشط + مجمد) ===== -->
+<div class="row g-3 mb-4">
+    <div class="col-md-12">
+        <div class="stat-card text-center p-3 bg-light">
+            <h6 class="stat-label">📊 إجمالي الأعضاء النشطين (نشط + مجمد)</h6>
+            <h3 class="stat-number">{{ total_active }}</h3>
+            <small class="text-muted">من أصل {{ total_members }} عضو</small>
+        </div>
+    </div>
+</div>
+
+<!-- ===== تنبيهات الاشتراكات ===== -->
+<div class="card mb-4">
+    <div class="card-header bg-warning">
+        <h5><i class="fas fa-exclamation-triangle"></i> اشتراكات على وشك الانتهاء (أقل من 7 أيام)</h5>
+    </div>
+    <div class="card-body">
+        {% if expiring_soon %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>الهاتف</th>
+                            <th>تاريخ النهاية</th>
+                            <th>الأيام المتبقية</th>
+                            <th>الحالة</th>
+                            <th>الإجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in expiring_soon %}
+                        <tr>
+                            <td>{{ member.name }}</td>
+                            <td>{{ member.phone }}</td>
+                            <td>{{ member.subscription_end|date:"d/m/Y" }}</td>
+                            <td>
+                                <span class="badge bg-danger">{{ member.days_until_expiry }} يوم</span>
+                            </td>
+                            <td>
+                                {% if member.is_frozen %}
+                                    <span class="badge bg-warning">❄️ مجمد</span>
+                                {% else %}
+                                    <span class="badge bg-success">نشط</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'edit_member' member.id %}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i> تجديد
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-success mb-0">✅ لا يوجد أعضاء على وشك انتهاء اشتراكهم</div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- ===== آخر عمليات الدخول ===== -->
+<div class="card">
+    <div class="card-header">
+        <h5><i class="fas fa-clock"></i> آخر عمليات الدخول</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>العضو</th>
+                        <th>التاريخ</th>
+                        <th>الوقت</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for att in recent_attendance %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ att.member.name }}</td>
+                        <td>{{ att.check_in_date|date:"d/m/Y" }}</td>
+                        <td>{{ att.check_in_time|time:"H:i" }}</td>
+                        <td>
+                            {% if att.member.is_frozen %}
+                                <span class="badge bg-warning">❄️ مجمد</span>
+                            {% else %}
+                                <span class="badge bg-success">نشط</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">لا توجد عمليات دخول مسجلة</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

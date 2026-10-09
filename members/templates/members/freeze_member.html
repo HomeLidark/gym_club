@@ -1,0 +1,131 @@
+{% extends 'members/base.html' %}
+
+{% block title %}تجميد اشتراك {{ member.name }}{% endblock %}
+
+{% block page_title %}
+    <i class="fas fa-pause-circle text-warning"></i> تجميد اشتراك
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'member_list' %}">الأعضاء</a></li>
+    <li class="breadcrumb-item active">تجميد اشتراك {{ member.name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-warning text-white">
+                <h5><i class="fas fa-snowflake"></i> تجميد اشتراك {{ member.name }}</h5>
+            </div>
+            <div class="card-body">
+                <!-- معلومات العضو -->
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle"></i> معلومات العضو:</h6>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <strong>الاسم:</strong> {{ member.name }}
+                        </div>
+                        <div class="col-6">
+                            <strong>الهاتف:</strong> {{ member.phone }}
+                        </div>
+                        <div class="col-6">
+                            <strong>تاريخ النهاية الحالي:</strong> {{ member.subscription_end|date:"d/m/Y" }}
+                        </div>
+                        <div class="col-6">
+                            <strong>الحالة:</strong>
+                            {% if member.is_frozen %}
+                                <span class="badge bg-warning">❄️ مجمد</span>
+                            {% else %}
+                                <span class="badge bg-success">نشط</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تحذير إذا كان مجمد بالفعل -->
+                {% if member.is_frozen %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        هذا العضو مجمد حالياً لمدة {{ member.frozen_days }} يوم
+                        (من {{ member.frozen_start|date:"d/m/Y" }} إلى {{ member.frozen_end|date:"d/m/Y" }})
+                    </div>
+                {% endif %}
+                
+                <!-- الفورم -->
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.days.label }}</label>
+                        {{ form.days }}
+                        <small class="text-muted d-block mt-1">
+                            <i class="fas fa-info-circle"></i> 
+                            أدخل عدد الأيام التي تريد تجميد الاشتراك فيها (مثال: 15)
+                        </small>
+                        {% if form.days.errors %}
+                            <div class="text-danger small">{{ form.days.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.notes.label }}</label>
+                        {{ form.notes }}
+                        <small class="text-muted d-block mt-1">سبب التجميد (اختياري)</small>
+                        {% if form.notes.errors %}
+                            <div class="text-danger small">{{ form.notes.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- معلومات عن النتيجة -->
+                    <div class="alert alert-success">
+                        <h6><i class="fas fa-calculator"></i> نتيجة التجميد:</h6>
+                        <p class="mb-0">
+                            تاريخ النهاية الحالي: <strong>{{ member.subscription_end|date:"d/m/Y" }}</strong><br>
+                            بعد التجميد سيكون: <strong id="new_end_date">-</strong>
+                        </p>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-pause-circle"></i> تجميد الاشتراك
+                        </button>
+                        <a href="{% url 'member_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> إلغاء
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // حساب تاريخ النهاية الجديد
+        const daysInput = document.querySelector('input[name="days"]');
+        const endDateSpan = document.getElementById('new_end_date');
+        const currentEnd = '{{ member.subscription_end|date:"Y-m-d" }}';
+        
+        if (daysInput && endDateSpan) {
+            daysInput.addEventListener('input', function() {
+                const days = parseInt(this.value) || 0;
+                if (days > 0) {
+                    const currentDate = new Date(currentEnd);
+                    currentDate.setDate(currentDate.getDate() + days);
+                    const newDate = currentDate.toLocaleDateString('ar-EG', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    });
+                    endDateSpan.textContent = newDate;
+                } else {
+                    endDateSpan.textContent = '-';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

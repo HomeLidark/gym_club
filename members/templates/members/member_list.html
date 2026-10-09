@@ -1,0 +1,225 @@
+{% extends 'members/base.html' %}
+
+{% block title %}الأعضاء{% endblock %}
+
+{% block page_title %}
+    <i class="fas fa-users"></i> قائمة الأعضاء
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">الأعضاء</li>
+{% endblock %}
+
+{% block page_actions %}
+    <a href="{% url 'add_member' %}" class="btn btn-primary">
+        <i class="fas fa-user-plus"></i> إضافة عضو
+    </a>
+{% endblock %}
+
+{% block content %}
+<!-- ===== الإحصائيات ===== -->
+<div class="row stats-row">
+    <div class="col-md-3 col-6">
+        <div class="stat-card text-center">
+            <div class="stat-icon primary">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-label">إجمالي الأعضاء</div>
+            <div class="stat-number">{{ total_count }}</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="stat-card text-center">
+            <div class="stat-icon success">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <div class="stat-label">نشطين</div>
+            <div class="stat-number">{{ active_count }}</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="stat-card text-center">
+            <div class="stat-icon warning">
+                <i class="fas fa-snowflake"></i>
+            </div>
+            <div class="stat-label">❄️ مجمدين</div>
+            <div class="stat-number">{{ frozen_count }}</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="stat-card text-center">
+            <div class="stat-icon danger">
+                <i class="fas fa-user-times"></i>
+            </div>
+            <div class="stat-label">منتهي اشتراك</div>
+            <div class="stat-number">{{ expired_count }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== فلتر البحث ===== -->
+<div class="filter-card">
+    <form method="get" class="row g-3">
+        <div class="col-md-4">
+            <input type="text" name="search" class="form-control" 
+                   placeholder="🔍 بحث بالاسم أو الهاتف أو رقم الهوية" 
+                   value="{{ request.GET.search }}">
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select">
+                <option value="">جميع الأعضاء</option>
+                <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>نشطين</option>
+                <option value="frozen" {% if request.GET.status == 'frozen' %}selected{% endif %}>❄️ مجمدين</option>
+                <option value="expired" {% if request.GET.status == 'expired' %}selected{% endif %}>منتهي اشتراك</option>
+                <option value="expiring" {% if request.GET.status == 'expiring' %}selected{% endif %}>سينتهي خلال 7 أيام</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-secondary w-100">
+                <i class="fas fa-search"></i> بحث
+            </button>
+        </div>
+        <div class="col-md-2">
+            <a href="{% url 'member_list' %}" class="btn btn-outline-secondary w-100">
+                <i class="fas fa-undo"></i> إلغاء
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- ===== جدول الأعضاء ===== -->
+<div class="table-container">
+    <div class="table-header">
+        <h5><i class="fas fa-list"></i> قائمة الأعضاء</h5>
+        <span class="badge">{{ members|length }} عضو</span>
+    </div>
+    <div class="table-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>رقم العضو</th>
+                        <th>الاسم</th>
+                        <th>الهاتف</th>
+                        <th>رقم الهوية</th>
+                        <th>بداية الاشتراك</th>
+                        <th>نهاية الاشتراك</th>
+                        <th>المتبقي</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            {{ member.name }}
+                            {% if member.is_frozen %}
+                                <span class="badge bg-warning ms-1">❄️ مجمد</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ member.phone }}</td>
+                        <td>{{ member.id_number }}</td>
+                        <td>{{ member.subscription_start|date:"d/m/Y" }}</td>
+                        <td>{{ member.subscription_end|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if member.is_expired %}
+                                <span class="badge bg-danger">منتهي</span>
+                            {% elif member.is_frozen %}
+                                <span class="badge bg-warning">❄️ مجمد</span>
+                            {% else %}
+                                <span class="badge bg-primary">{{ member.days_until_expiry }} يوم</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if member.is_frozen %}
+                                <span class="badge badge-status frozen">
+                                    <i class="fas fa-snowflake"></i> مجمد
+                                </span>
+                                {% if member.frozen_days %}
+                                    <br>
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock"></i> {{ member.frozen_days }} يوم
+                                    </small>
+                                {% endif %}
+                            {% elif member.is_expired %}
+                                <span class="badge badge-status expired">
+                                    <i class="fas fa-times-circle"></i> منتهي
+                                </span>
+                            {% elif member.is_active %}
+                                <span class="badge badge-status active">
+                                    <i class="fas fa-check-circle"></i> نشط
+                                </span>
+                            {% else %}
+                                <span class="badge badge-status inactive">
+                                    <i class="fas fa-minus-circle"></i> غير نشط
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'edit_member' member.id %}" 
+                                   class="btn btn-warning" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                
+                                {% if member.is_frozen %}
+                                    <a href="{% url 'unfreeze_member' member.id %}" 
+                                       class="btn btn-success" title="إلغاء التجميد">
+                                        <i class="fas fa-play"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'freeze_member' member.id %}" 
+                                       class="btn btn-info" title="تجميد">
+                                        <i class="fas fa-pause"></i>
+                                    </a>
+                                {% endif %}
+                                
+                                <a href="{% url 'delete_member' member.id %}" 
+                                   class="btn btn-danger delete-confirm" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                            
+                            {% if member.is_frozen and member.frozen_end %}
+                                <br>
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar-alt"></i> 
+                                    حتى: {{ member.frozen_end|date:"d/m/Y" }}
+                                </small>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9">
+                            <div class="empty-state">
+                                <i class="fas fa-users"></i>
+                                <h5>لا يوجد أعضاء</h5>
+                                <p>قم بإضافة عضو جديد بالضغط على زر "إضافة عضو"</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.delete-confirm');
+        deleteButtons.forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                if (!confirm('⚠️ هل أنت متأكد من حذف هذا العضو؟\nهذا الإجراء لا يمكن التراجع عنه!')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

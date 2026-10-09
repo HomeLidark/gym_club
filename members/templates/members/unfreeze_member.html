@@ -1,0 +1,67 @@
+{% extends 'members/base.html' %}
+
+{% block title %}إلغاء تجميد اشتراك {{ member.name }}{% endblock %}
+
+{% block page_title %}
+    <i class="fas fa-play-circle text-success"></i> إلغاء تجميد اشتراك
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'member_list' %}">الأعضاء</a></li>
+    <li class="breadcrumb-item active">إلغاء تجميد {{ member.name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5><i class="fas fa-play-circle"></i> إلغاء تجميد اشتراك {{ member.name }}</h5>
+            </div>
+            <div class="card-body">
+                <!-- معلومات التجميد -->
+                <div class="alert alert-warning">
+                    <h6><i class="fas fa-info-circle"></i> معلومات التجميد:</h6>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <strong>الاسم:</strong> {{ member.name }}
+                        </div>
+                        <div class="col-6">
+                            <strong>الهاتف:</strong> {{ member.phone }}
+                        </div>
+                        <div class="col-6">
+                            <strong>تاريخ بدء التجميد:</strong> {{ member.frozen_start|date:"d/m/Y" }}
+                        </div>
+                        <div class="col-6">
+                            <strong>تاريخ انتهاء التجميد:</strong> {{ member.frozen_end|date:"d/m/Y" }}
+                        </div>
+                        <div class="col-12 mt-2">
+                            <strong>عدد أيام التجميد:</strong> {{ member.frozen_days }} يوم
+                        </div>
+                        <div class="col-12">
+                            <strong>تاريخ النهاية بعد التجميد:</strong> {{ member.subscription_end|date:"d/m/Y" }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    بعد إلغاء التجميد، سيعود العضو للحالة النشطة.
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-play"></i> إلغاء التجميد
+                        </button>
+                        <a href="{% url 'member_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> إلغاء
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

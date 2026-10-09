@@ -1,0 +1,27 @@
+{% extends 'members/base.html' %}
+
+{% block title %}تأكيد الحذف{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5>⚠️ تأكيد الحذف</h5>
+            </div>
+            <div class="card-body">
+                <p>هل أنت متأكد من حذف العضو <strong>{{ member.name }}</strong>؟</p>
+                <p class="text-muted">هذا الإجراء لا يمكن التراجع عنه!</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> نعم، احذف
+                    </button>
+                    <a href="{% url 'member_list' %}" class="btn btn-secondary">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

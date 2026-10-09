@@ -1,0 +1,111 @@
+{% extends 'members/base.html' %}
+
+{% block title %}تقرير الحضور الشهري{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+        <i class="fas fa-calendar-alt"></i> 
+        تقرير الحضور الشهري
+        <span class="badge bg-primary">{{ month_name }} {{ year }}</span>
+    </h2>
+    <div>
+        <a href="?month={{ prev_month }}&year={{ prev_year }}" class="btn btn-outline-secondary">
+            <i class="fas fa-chevron-right"></i> السابق
+        </a>
+        <a href="?month={{ next_month }}&year={{ next_year }}" class="btn btn-outline-primary">
+            التالي <i class="fas fa-chevron-left"></i>
+        </a>
+        <a href="{% url 'monthly_report' %}" class="btn btn-success">
+            <i class="fas fa-calendar-day"></i> الشهر الحالي
+        </a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h6 class="card-title">إجمالي الأعضاء النشطين</h6>
+                <h2 class="mb-0">{{ total_members }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h6 class="card-title">عدد أيام الشهر</h6>
+                <h2 class="mb-0">{{ days_in_month }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h6 class="card-title">الفترة</h6>
+                <h6 class="mb-0">{{ month_start|date:"d/m/Y" }} - {{ month_end|date:"d/m/Y" }}</h6>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h5>
+            <i class="fas fa-list"></i> 
+            تقرير حضور الأعضاء
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>الاسم</th>
+                        <th>الهاتف</th>
+                        <th>عدد أيام الحضور</th>
+                        <th>النسبة المئوية</th>
+                        <th>التقييم</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in report_data %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.member.name }}</td>
+                        <td>{{ item.member.phone }}</td>
+                        <td>
+                            <span class="badge bg-primary">{{ item.attendance_count }} / {{ item.days_in_month }}</span>
+                        </td>
+                        <td>
+                            {% widthratio item.attendance_count item.days_in_month 100 %}%
+                        </td>
+                        <td>
+                            {% with percentage=item.attendance_count|divisibleby:item.days_in_month %}
+                                {% if item.attendance_count == item.days_in_month %}
+                                    <span class="badge bg-success">🥇 ممتاز (كامل)</span>
+                                {% elif item.attendance_count >= item.days_in_month|add:"-5" %}
+                                    <span class="badge bg-primary">👍 جيد جداً</span>
+                                {% elif item.attendance_count >= item.days_in_month|add:"-10" %}
+                                    <span class="badge bg-warning">👌 جيد</span>
+                                {% else %}
+                                    <span class="badge bg-danger">⚠️ ضعيف</span>
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="fas fa-users fa-2x d-block mb-2"></i>
+                            لا يوجد أعضاء نشطين
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

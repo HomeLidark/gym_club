@@ -1,0 +1,126 @@
+{% extends 'members/base.html' %}
+
+{% block title %}تنبيهات الاشتراكات{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">🔔 تنبيهات الاشتراكات</h2>
+
+<!-- منتهي الاشتراك -->
+<div class="card mb-4 border-danger">
+    <div class="card-header bg-danger text-white">
+        <h5>❌ اشتراكات منتهية</h5>
+    </div>
+    <div class="card-body">
+        {% if expired %}
+            <div class="table-responsive">
+                <table class="table table-danger">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>الهاتف</th>
+                            <th>تاريخ النهاية</th>
+                            <th>متأخر منذ</th>
+                            <th>الإجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in expired %}
+                        <tr>
+                            <td>{{ member.name }}</td>
+                            <td>{{ member.phone }}</td>
+                            <td>{{ member.subscription_end|date:"d/m/Y" }}</td>
+                            <td>
+                                <span class="badge bg-danger">
+                                    {{ member.subscription_end|timesince }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{% url 'edit_member' member.id %}" class="btn btn-sm btn-warning">تجديد</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-success">✅ لا يوجد أعضاء منتهي اشتراكهم</div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- ستنتهي خلال 7 أيام -->
+<div class="card mb-4 border-warning">
+    <div class="card-header bg-warning">
+        <h5>⚠️ ستنتهي خلال 7 أيام</h5>
+    </div>
+    <div class="card-body">
+        {% if expiring_soon %}
+            <div class="table-responsive">
+                <table class="table table-warning">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>الهاتف</th>
+                            <th>تاريخ النهاية</th>
+                            <th>الأيام المتبقية</th>
+                            <th>الإجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in expiring_soon %}
+                        <tr>
+                            <td>{{ member.name }}</td>
+                            <td>{{ member.phone }}</td>
+                            <td>{{ member.subscription_end|date:"d/m/Y" }}</td>
+                            <td>
+                                <span class="badge bg-warning">{{ member.days_until_expiry }} يوم</span>
+                            </td>
+                            <td>
+                                <a href="{% url 'edit_member' member.id %}" class="btn btn-sm btn-primary">تجديد</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-success">✅ لا يوجد أعضاء على وشك الانتهاء</div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- ستنتهي خلال 14 يوم -->
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h5>ℹ️ ستنتهي خلال 14 يوم</h5>
+    </div>
+    <div class="card-body">
+        {% if expiring_later %}
+            <div class="table-responsive">
+                <table class="table table-info">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>الهاتف</th>
+                            <th>تاريخ النهاية</th>
+                            <th>الأيام المتبقية</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in expiring_later %}
+                        <tr>
+                            <td>{{ member.name }}</td>
+                            <td>{{ member.phone }}</td>
+                            <td>{{ member.subscription_end|date:"d/m/Y" }}</td>
+                            <td>{{ member.days_until_expiry }} يوم</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-success">✅ لا يوجد أعضاء ستنتهي اشتراكاتهم خلال 14 يوم</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
